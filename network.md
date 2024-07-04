@@ -37,6 +37,11 @@
 - ss -K dst 192.168.1.2 dport=49029
 - ss --kill -o state established "( dst 192.168.1.2 and dport = 49029 )"
 
+# TCP keepalive config
+- /proc/sys/net/ipv4/tcp_keepalive_time 7200
+- /proc/sys/net/ipv4/tcp_keepalive_intvl 75
+- /proc/sys/net/ipv4/tcp_keepalive_probes 9
+
 # How to limit idle timeout?
 ## Option 1 - global
 - Limit the idle timeout value of an established connection, for all connections by modifying the appropriate global netfilter variable.
