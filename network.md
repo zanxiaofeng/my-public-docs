@@ -37,7 +37,7 @@
 - ss -K dst 192.168.1.2 dport=49029
 - ss --kill -o state established "( dst 192.168.1.2 and dport = 49029 )"
 
-# How to limit idle timeout
+# How to limit idle timeout?
 ## Option 1 - global
 - Limit the idle timeout value of an established connection, for all connections by modifying the appropriate global netfilter variable.
 - Verify the current default value with:
