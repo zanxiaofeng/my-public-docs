@@ -26,3 +26,5 @@
 - 二层网络只能通过邻接网络完成寻址通讯。
 - 三层网络可以跨邻接网络完成寻址通讯。
 - 一次三层跨网络通讯是基于多个二层邻接网络的通讯接力合作完成的。
+# TCP keepalive and firewall killing idle sessions
+- A stateful firewall checks the packets and also confirm if the connection is alive.
