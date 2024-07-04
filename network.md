@@ -27,4 +27,34 @@
 - 三层网络可以跨邻接网络完成寻址通讯。
 - 一次三层跨网络通讯是基于多个二层邻接网络的通讯接力合作完成的。
 # TCP keepalive and firewall killing idle sessions
+## TCP keepalive
+- netstat --timer -cnpt
+- ss -n -o state established
+## Firewall killing idle sessions
 - A stateful firewall checks the packets and also confirm if the connection is alive.
+## Manual kill session by tcpkill
+- tcpkill -i wlan0 <express>
+- ss -K dst 192.168.1.2 dport=49029
+- ss --kill -o state established "( dst 192.168.1.2 and dport = 49029 )"
+
+# How to limit idle timeout
+## Option 1 - global
+- Limit the idle timeout value of an established connection, for all connections by modifying the appropriate global netfilter variable.
+- Verify the current default value with:
+- `cat /proc/sys/net/netfilter/nf_conntrack_tcp_timeout_established`
+- Modify the default value (for example, to 600 seconds) with:
+- `echo 600 > /proc/sys/net/netfilter/nf_conntrack_tcp_timeout_established`
+## Option 2 - granular
+- Limit the idle timeout value of an established connection, for specific connections, by setting up a timeout policy and using that policy with the iptables command.
+- Setup a timeout policy with:
+- `sudo nfct add timeout nam1 inet tcp established 600`
+- `sudo nfct list timeout`
+- `sudo nfct delete timeout nam1`
+- Apply that policy to iptables rules:
+- `iptables -I PREROUTING -t raw -p tcp -j CT --timeout nam1`
+- `iptables -I OUTPUT -t raw -p tcp -j CT --timeout nam1`
+- You might need to install the nfct tool, which on debian / ubuntu, comes from the package with the same name (nfct).
+## Additional info
+- man iptables-extensions shows some information on the CT target.
+- man nfct shows an example which is close to the information you requested. (You may have issues using the timeout policy with a name of more than four characters in length.)
+- The conntrack tool can be useful for following what's going on at different events of the connection (e.g. conntrack -E -p tcp).
