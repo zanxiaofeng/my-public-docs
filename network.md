@@ -26,21 +26,45 @@
 - 二层网络只能通过邻接网络完成寻址通讯。
 - 三层网络可以跨邻接网络完成寻址通讯。
 - 一次三层跨网络通讯是基于多个二层邻接网络的通讯接力合作完成的。
-# TCP keepalive and firewall killing idle sessions
-## TCP keepalive
+
+# TCP keep-alivee & HTTP keep-alive & Firewall killing idle sessions
+## HTTP keep-alive
+- HTTP persistent connections, also called HTTP keep-alive, or HTTP connection reuse, is the idea of using the same TCP connection to send and receive multiple HTTP requests/responses, as opposed to opening a new one for every single request/response pair. Using persistent connections is very important for improving HTTP performance.
+### The system properties that control the behavior of Keep-Alive
+- http.keepAlive=<boolean>
+- default: true
+- Indicates if keep alive (persistent) connections should be supported. 
+- http.maxConnections=<int>
+- default: 5
+- Indicates the maximum number of connections per destination to be kept alive at any given time
+### HTTP header that influences connection persistence
+- Connection: close
+- If the "Connection" header is specified with the value "close" in either the request or the response header fields, it indicates that the connection should not be considered 'persistent' after the current request/response is complete.
+## TCP keep-alive
+- TCP keepalive is a mechanism that allows a TCP connection to remain active even when no data is exchanged for a long period of time. It works by sending periodic probes or messages from one endpoint to the other, and expecting an acknowledgment in return. If the acknowledgment is not received within a specified time, the connection is considered dead and terminated. TCP keepalive can help to detect and handle network failures, such as broken cables, routers, firewalls, or hosts.
+### Linux config for TCP keep-alive
+- /proc/sys/net/ipv4/tcp_keepalive_time 7200
+- /proc/sys/net/ipv4/tcp_keepalive_intvl 75
+- /proc/sys/net/ipv4/tcp_keepalive_probes 9
+### The setsockopt function call
+- int setsockopt(int s, int level, int optname, const void *optval, socklen_t optlen)
+- SO_KEEPALIVE true
+- TCP_KEEPCNT: overrides tcp_keepalive_probes
+- TCP_KEEPIDLE: overrides tcp_keepalive_time
+- TCP_KEEPINTVL: overrides tcp_keepalive_intvl
+### Adding support to third-party software
+- source code modification of the original program
+- setsockopt injection using the library preloading technique(libkeepalive: library preloading)
+### Check TCP keep-alive
 - netstat --timer -cnpt
 - ss -n -o state established
 ## Firewall killing idle sessions
 - A stateful firewall checks the packets and also confirm if the connection is alive.
-## Manual kill session by tcpkill
+### Manual kill session by tcpkill
 - tcpkill -i wlan0 <express>
 - ss -K dst 192.168.1.2 dport=49029
 - ss --kill -o state established "( dst 192.168.1.2 and dport = 49029 )"
 
-# TCP keepalive config
-- /proc/sys/net/ipv4/tcp_keepalive_time 7200
-- /proc/sys/net/ipv4/tcp_keepalive_intvl 75
-- /proc/sys/net/ipv4/tcp_keepalive_probes 9
 
 # How to limit idle timeout?
 ## Option 1 - global
