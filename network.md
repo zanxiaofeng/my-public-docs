@@ -63,7 +63,7 @@
 ### Manual kill session by tcpkill
 - tcpkill -i wlan0 <express>
 - ss -K dst 192.168.1.2 dport=49029
-- ss --kill -o state established "( dst 192.168.1.2 and dport = 49029 )"
+- ss --kill -o state established "(dst 192.168.1.2 and dport = 49029)"
 
 
 # How to limit idle timeout?
