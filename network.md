@@ -48,10 +48,10 @@
 - /proc/sys/net/ipv4/tcp_keepalive_probes 9
 ### The setsockopt function call
 - int setsockopt(int s, int level, int optname, const void *optval, socklen_t optlen)
-- SO_KEEPALIVE true
-- TCP_KEEPCNT: overrides tcp_keepalive_probes
-- TCP_KEEPIDLE: overrides tcp_keepalive_time
-- TCP_KEEPINTVL: overrides tcp_keepalive_intvl
+- SOL_SOCKET, SO_KEEPALIVE true
+- SOL_TCP, TCP_KEEPCNT: overrides tcp_keepalive_probes
+- SOL_TCP, TCP_KEEPIDLE: overrides tcp_keepalive_time
+- SOL_TCP, TCP_KEEPINTVL: overrides tcp_keepalive_intvl
 ### Adding support to third-party software
 - source code modification of the original program
 - setsockopt injection using the library preloading technique(libkeepalive: library preloading)
