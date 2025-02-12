@@ -13,7 +13,28 @@
 - pg_global：系统默认创建的表空间，用来存储系统字典表。
 # 锁
 
-# 统计
+# pg_catalog
+- pg_catalog.pg_database
+- pg_catalog.pg_tables
+- pg_catalog.pg_indexes
+- pg_catalog.pg_views
+- pg_catalog.pg_locks
+- pg_catalog.pg_stats
+- pg_catalog.pg_roles
+- pg_catalog.pg_stat_database
+- pg_catalog.pg_stat_activity
+- pg_catalog.pg_stat_all_tables
+- pg_catalog.pg_stat_sys_tables
+- pg_catalog.pg_stat_user_tables
+- pg_catalog.pg_stat_all_indexes
+- pg_catalog.pg_stat_sys_indexes
+- pg_catalog.pg_stat_user_indexes
+
+# information_schema
+- information_schema.tables
+- information_schema.views
+- information_schema.role_table_grants
+
 
 # 执行计划
 
